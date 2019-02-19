@@ -21,15 +21,23 @@ pthread_cond_t ready_for_producer; // condition for producer
 int (*pred)(int); // predicate indicating number to be consumed
 
 int produceT() {
+  //aquire the mutex lock
   pthread_mutex_lock(&mutex);
   printf("Producer got Mutex");
+  //if the buffer isnt ready for production wait
   while(contents >= 1){
+    //wait for signal to produce
     pthread_cond_wait(&ready_for_producer, &mutex);
   }
+  //ensure that we are still ready for production
   assert(contents < 1);
+  //produce and save to pnum
   scanf("%d",&pnum);
+  //update the status
   contents++;
+  //signal the waiting consumers
   pthread_cond_signal(&ready_for_consumer);
+  //release the mutex
   pthread_mutex_unlock(&mutex);
   return pnum;
 }
@@ -50,15 +58,22 @@ void *Produce(void *a) {
 
 
 int consumeT() {
+  //aquire the mutex lock
   pthread_mutex_lock(&mutex);
   printf("Consumer got Mutex");
+  //if the buffer isnt ready for consumption wait
   while(contents <= 0){
     pthread_cond_wait(&ready_for_consumer, &mutex);
   }
+  //ensure that we are still ready for consumption
   assert(contents >= 1);
+  //consumer from pnum
   if ( pred(pnum) ) { csum += pnum; }
+  //update the status
   contents--;
+  //signal the waiting consumers
   pthread_cond_signal(&ready_for_producer);
+  //release the mutex
   pthread_mutex_unlock(&mutex);
   return pnum;
 }
