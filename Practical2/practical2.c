@@ -55,7 +55,7 @@ void *Produce(void *a) {
   }
   printf("EXIT-P\n");
   //destroy condition variable
-  pthread_cond_destroy(&ready_for_consumer);
+  pthread_cond_destroy(&ready_for_producer);
 }
 
 
