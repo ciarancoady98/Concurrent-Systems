@@ -23,7 +23,7 @@ int (*pred)(int); // predicate indicating number to be consumed
 int produceT() {
   //aquire the mutex lock
   pthread_mutex_lock(&mutex);
-  printf("Producer got Mutex\n");
+  //printf("Producer got Mutex\n");
   //if the buffer isnt ready for production wait
   while(contents >= 1){
     //wait for signal to produce
@@ -54,15 +54,16 @@ void *Produce(void *a) {
     printf("PRODUCED %d\n",p);
   }
   printf("EXIT-P\n");
-  //destroy condition variable
-  pthread_cond_destroy(&ready_for_producer);
+  //destroy condition variable DONT DO THIS!!
+  //DO THIS IN THE MAINLINE WHEN THREADS ARE DONE
+  //pthread_cond_destroy(&ready_for_producer);
 }
 
 
 int consumeT() {
   //aquire the mutex lock
   pthread_mutex_lock(&mutex);
-  printf("Consumer got Mutex\n");
+  //printf("Consumer got Mutex\n");
   //if the buffer isnt ready for consumption wait
   while(contents <= 0){
     pthread_cond_wait(&ready_for_consumer, &mutex);
@@ -92,8 +93,8 @@ void *Consume(void *a) {
     printf("CONSUMED %d\n",csum);
   }
   printf("EXIT-C\n");
-  //destroy condition variable
-  pthread_cond_destroy(&ready_for_consumer);
+  //destroy condition variable DONT DO THIS!!!
+  //pthread_cond_destroy(&ready_for_consumer);
 
 }
 
@@ -137,6 +138,8 @@ int main (int argc, const char * argv[]) {
 
   //clean up Mutex
   pthread_mutex_destroy(&mutex);
+  pthread_cond_destroy(&ready_for_producer);
+  pthread_cond_destroy(&ready_for_consumer);
 
   return 0;
 }
