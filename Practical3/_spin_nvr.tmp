@@ -1,0 +1,12 @@
+never goodProperty {    /* !((! (thinking)) || (<> (eating))) */
+accept_init:
+T0_init:
+	do
+	:: (! ((! (thinking))) && ! ((eating))) -> goto accept_S3
+	od;
+accept_S3:
+T0_S3:
+	do
+	:: (! ((eating))) -> goto accept_S3
+	od;
+}
