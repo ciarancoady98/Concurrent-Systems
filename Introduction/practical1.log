@@ -1,0 +1,31 @@
+ciaran@LilAnvil:~/cs2016/Introduction$ cc -o sum sumofhellos.c -pthread
+sumofhellos.c: In function ‘PrintHello’:
+sumofhellos.c:14:16: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘void *’ [-Wformat=]
+     printf("\n%d: Hello World, from %s!\n",threadid,USERNAME );
+               ~^
+               %p
+sumofhellos.c: In function ‘main’:
+sumofhellos.c:25:57: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+         rc = pthread_create(&threads[t],NULL,PrintHello,(void *)t);
+                                                         ^
+ciaran@LilAnvil:~/cs2016/Introduction$ ./sum
+Creating thread 0
+Creating thread 1
+Creating thread 2
+
+0: Hello World, from ccoady!
+Creating thread 3
+
+1: Hello World, from ccoady!
+
+2: Hello World, from ccoady!
+
+3: Hello World, from ccoady!
+Creating thread 4
+Creating thread 5
+
+4: Hello World, from ccoady!
+
+5: Hello World, from ccoady!
+
+All threads done by ccoady, x = 20
